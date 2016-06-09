@@ -13,7 +13,7 @@ class WeatherApp extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      pin: {latitude: 37, longitude: -95},
+      pin: {latitude: 37.7749, longitude: -122.4194},
       city: '',
       temp: '',
       desc: ''
