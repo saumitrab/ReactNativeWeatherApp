@@ -1,6 +1,6 @@
 // TODO: change this to es6
 
-//let rootUrl = 'http://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid='
+import {capitalize} from 'lodash';
 let rootUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID=5b71e81685f0a6c5e731181b8b059480'
 
 let kelvinToF = function(kelvin) {
@@ -17,7 +17,7 @@ module.exports = function(latitude, longitude) {
       return {
         city: json.name,
         temp: kelvinToF(json.main.temp),
-        desc: json.weather[0].description 
+        desc: capitalize(json.weather[0].description)
       }
     })
     .catch((err) => {
