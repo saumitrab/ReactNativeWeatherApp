@@ -1,53 +1,70 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  MapView
 } from 'react-native';
 
+import Api from './src/api';
+
 class WeatherApp extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      pin: {latitude: 37, longitude: -95},
+      city: '',
+      temp: '',
+      desc: ''
+    }
+  }
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
+        <MapView annotations={[this.state.pin]} onRegionChangeComplete={this.onRegionChangeComplete.bind(this)} style={styles.map}></MapView>
+        <View style={styles.desc}>
+          <Text style={styles.text}>{this.state.city}</Text>
+          <Text style={styles.text}>{this.state.temp}</Text>
+          <Text style={styles.text}>{this.state.desc}</Text>
+        </View>
       </View>
     );
+  }
+  onRegionChangeComplete(region) {
+    this.setState({
+      pin: {
+        latitude: region.latitude,
+        longitude: region.longitude
+      }
+    });
+
+    Api(region.latitude, region.longitude)
+      .then((data) => {
+        console.log(data);
+        this.setState(data);
+      });
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex:1,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    alignItems: 'stretch',
+    backgroundColor: '#F5FCFF'
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  map: {
+    flex: 6,
+    marginTop: 20
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  desc: {
+    flex: 1,
+    alignItems: 'center'
   },
+  text: {
+    fontSize: 20
+  }
 });
 
 AppRegistry.registerComponent('WeatherApp', () => WeatherApp);
