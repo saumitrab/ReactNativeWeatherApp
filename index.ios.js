@@ -41,8 +41,10 @@ class WeatherApp extends Component {
 
     Api(region.latitude, region.longitude)
       .then((data) => {
-        console.log(data);
         this.setState(data);
+      });
+      .catch((err) => {
+        console.log(err);
       });
   }
 }

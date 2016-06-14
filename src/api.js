@@ -20,7 +20,4 @@ module.exports = function(latitude, longitude) {
         desc: capitalize(json.weather[0].description)
       }
     })
-    .catch((err) => {
-      console.log(err);
-    });
 }
